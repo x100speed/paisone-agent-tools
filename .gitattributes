@@ -1,0 +1,3 @@
+* text=auto eol=lf
+skills/paisone/SKILL.md -text
+skills/paisone/scripts/paisone.mjs -text

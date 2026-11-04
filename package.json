@@ -1,0 +1,13 @@
+{
+  "name": "paisone-agent-tools",
+  "version": "0.2.0-test",
+  "private": true,
+  "type": "module",
+  "description": "PaisOne TEST read-only CLI and Agent Skill",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test test/cli.test.mjs",
+    "build": "node tools/build-release.mjs"
+  }
+}
