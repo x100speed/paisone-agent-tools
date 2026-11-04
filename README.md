@@ -25,14 +25,15 @@ API 目的地固定为 `https://www.paisone.online/test/`。生产账户、购�
 ```sh
 curl -fL https://github.com/x100speed/paisone-agent-tools/releases/download/v0.2.0-test/paisone.mjs -o paisone.mjs
 curl -fL https://github.com/x100speed/paisone-agent-tools/releases/download/v0.2.0-test/paisone-skill.zip -o paisone-skill.zip
+curl -fL https://github.com/x100speed/paisone-agent-tools/releases/download/v0.2.0-test/LICENSE -o LICENSE
 curl -fL https://github.com/x100speed/paisone-agent-tools/releases/download/v0.2.0-test/SHA256SUMS -o SHA256SUMS
 sha256sum -c SHA256SUMS
 node paisone.mjs capabilities
 ```
 
-PowerShell 可用 `Get-FileHash .\paisone.mjs -Algorithm SHA256` 和 `Get-FileHash .\paisone-skill.zip -Algorithm SHA256`，分别与清单中的值比较。发布资产与安装指引固定到 tag，不下载随时变化的 `main`。
+PowerShell 可用 `Get-FileHash .\paisone.mjs -Algorithm SHA256`、`Get-FileHash .\paisone-skill.zip -Algorithm SHA256` 和 `Get-FileHash .\LICENSE -Algorithm SHA256`，分别与清单中的值比较。发布资产与安装指引固定到 tag，不下载随时变化的 `main`。独立 CLI 内含完整 MIT 版权与许可声明；分发时同时保留 LICENSE。
 
-安装 Skill 时解压 `paisone-skill.zip`，将其中的 `paisone` 文件夹按 Agent 支持的方式导入，保留 `SKILL.md` 与 `scripts/paisone.mjs`。源码位于 [`skills/paisone`](skills/paisone)，独立 CLI 与 ZIP 由同一份脚本生成。
+安装 Skill 时解压 `paisone-skill.zip`，将其中的 `paisone` 文件夹按 Agent 支持的方式导入，保留 `SKILL.md`、`scripts/paisone.mjs` 与 `LICENSE`。源码位于 [`skills/paisone`](skills/paisone)，独立 CLI 与 ZIP 由同一份脚本生成。
 
 ## 配置受限密钥
 
@@ -74,11 +75,12 @@ npm run build
 
 两条命令都只使用 Node.js 内置模块。测试使用合成响应和明确的示例号码，不读取真实账户或调用线上 API；构建不联网、不创建 GitHub 仓库，也不发布资产。
 
-`npm run build` 从 `skills/paisone/` 生成三个文件：
+`npm run build` 从 `skills/paisone/` 与根目录 LICENSE 生成四个文件：
 
 ```text
 dist/paisone.mjs
 dist/paisone-skill.zip
+dist/LICENSE
 dist/SHA256SUMS
 ```
 
@@ -94,4 +96,4 @@ PaisOne Agent Tools provides a Node.js 22+ CLI and installable Agent Skill for t
 
 Available: public simulated inventory, explicitly authorized numbers, incoming messages and bounded waits for new SMS. Account commands read a restricted `ps_test_` key from `PAISONE_API_KEY`, with `numbers:read` and/or `sms:read` scopes, an explicit number allowlist and expiry. Revoke the key in the TEST account when finished. TEST can include real private SMS.
 
-Use the pinned GitHub Release above, inspect its source and verify the downloaded assets against `SHA256SUMS` before running. Extract the Skill ZIP and import its `paisone` folder through your agent's supported installer. Purchases, payments, wallet, orders, renewals and production access are unavailable. Installation grants no account authorization. `npm test` is offline; `npm run build` deterministically creates the standalone CLI, Skill ZIP and checksums from the canonical Skill source.
+Use the pinned GitHub Release above, inspect its source and verify the downloaded assets against `SHA256SUMS` before running. Extract the Skill ZIP and import its `paisone` folder through your agent's supported installer, retaining its license notice. The standalone CLI carries the full MIT notice and is distributed with LICENSE. Purchases, payments, wallet, orders, renewals and production access are unavailable. Installation grants no account authorization. `npm test` is offline; `npm run build` deterministically creates the standalone CLI, Skill ZIP, LICENSE and checksums from the canonical Skill source.

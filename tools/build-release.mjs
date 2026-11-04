@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const skill = readFileSync(new URL('../skills/paisone/SKILL.md', import.meta.url));
 const cli = readFileSync(new URL('../skills/paisone/scripts/paisone.mjs', import.meta.url));
+const license = readFileSync(new URL('../LICENSE', import.meta.url));
 const metadata = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 if (metadata.version !== '0.2.0-test' || !cli.includes(Buffer.from("version: '0.2.0-test', environment: 'test'"))) throw new Error('Release version differs from CLI capabilities');
 
@@ -19,7 +20,7 @@ const crc32 = data => {
 };
 const parts = [], central = [];
 let offset = 0;
-for (const [path, data] of [['paisone/SKILL.md', skill], ['paisone/scripts/paisone.mjs', cli]]) {
+for (const [path, data] of [['paisone/SKILL.md', skill], ['paisone/scripts/paisone.mjs', cli], ['paisone/LICENSE', license]]) {
   const name = Buffer.from(path, 'utf8'), crc = crc32(data);
   const local = Buffer.alloc(30);
   local.writeUInt32LE(0x04034b50, 0); local.writeUInt16LE(20, 4);
@@ -34,12 +35,12 @@ for (const [path, data] of [['paisone/SKILL.md', skill], ['paisone/scripts/paiso
   central.push(entry, name); offset += local.length + name.length + data.length;
 }
 const directory = Buffer.concat(central), end = Buffer.alloc(22);
-end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(2, 8); end.writeUInt16LE(2, 10);
+end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(3, 8); end.writeUInt16LE(3, 10);
 end.writeUInt32LE(directory.length, 12); end.writeUInt32LE(offset, 16);
 const zip = Buffer.concat([...parts, directory, end]);
 const output = new URL('../dist/', import.meta.url);
 mkdirSync(output, { recursive: true });
-const files = [['paisone.mjs', cli], ['paisone-skill.zip', zip]];
+const files = [['paisone.mjs', cli], ['paisone-skill.zip', zip], ['LICENSE', license]];
 for (const [name, data] of files) writeFileSync(new URL(name, output), data);
 const checksums = files.map(([name, data]) => createHash('sha256').update(data).digest('hex') + '  ' + name).join('\n') + '\n';
 writeFileSync(new URL('SHA256SUMS', output), checksums);

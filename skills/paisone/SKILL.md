@@ -1,5 +1,6 @@
 ---
 name: paisone
+license: MIT
 description: Query PaisOne TEST number availability, list explicitly authorized numbers, read their SMS and wait for new messages with a restricted TEST API key. Use for PaisOne number and incoming SMS tasks. Purchases, payments, wallet, orders and production access are not available through this skill.
 ---
 
